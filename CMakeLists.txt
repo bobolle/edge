@@ -53,6 +53,19 @@ target_link_libraries(wifi
     pico_cyw43_arch_lwip_threadsafe_background
 )
 
+add_library(photoresistor
+    src/photoresistor.c
+)
+
+target_include_directories(photoresistor
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/include
+)
+
+target_link_libraries(photoresistor
+    hardware_adc
+)
+
 #target_sources(mqtt PRIVATE ${PICO_SDK_PATH}/lib/lwip/src/apps/mqtt/mqtt.c)
 
 add_executable(edge
@@ -63,6 +76,7 @@ target_link_libraries(edge
     pico_stdlib
     wifi
     mqtt
+    photoresistor
 )
 
 pico_enable_stdio_usb(edge 1)
