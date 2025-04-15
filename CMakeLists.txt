@@ -66,6 +66,21 @@ target_link_libraries(photoresistor
     hardware_adc
 )
 
+add_library(moisture
+    src/moisture.c
+)
+
+target_include_directories(moisture
+    PUBLIC
+        ${CMAKE_CURRENT_LIST_DIR}/include
+)
+
+target_link_libraries(moisture
+    pico_stdlib
+    hardware_gpio
+    hardware_adc
+)
+
 #target_sources(mqtt PRIVATE ${PICO_SDK_PATH}/lib/lwip/src/apps/mqtt/mqtt.c)
 
 add_executable(edge
@@ -77,6 +92,7 @@ target_link_libraries(edge
     wifi
     mqtt
     photoresistor
+    moisture
 )
 
 pico_enable_stdio_usb(edge 1)
