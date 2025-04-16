@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef PHOTORESISTOR_H
 #define PHOTORESISTOR_H
 

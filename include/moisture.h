@@ -1,3 +1,5 @@
+#pragma once
+
 #ifndef MOISTURE_H
 #define MOISTURE_H
 
