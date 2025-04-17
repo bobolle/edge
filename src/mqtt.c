@@ -42,15 +42,13 @@ static void mqtt_pub_request_cb(void *arg, err_t result)
     }
 }
 
-err_t publish_read(const char* sensor, int value)
+void publish_sensor_read(const char* sensor, int value)
 {
     char topic[32];
     snprintf(topic, sizeof(topic), "edge/%s/sensor/%s", CLIENT_ID, sensor);
 
-    char payload[32];
+    char payload[20];
     snprintf(payload, sizeof(payload), "{\"value\": %d}", value);
 
-    err_t err = mqtt_publish(mqtt_client, topic, payload, strlen(payload), 0, 0, mqtt_pub_request_cb, NULL);
-
-    return err;
+    mqtt_publish(mqtt_client, topic, payload, strlen(payload), 0, 0, mqtt_pub_request_cb, NULL);
 }
