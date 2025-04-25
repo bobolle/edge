@@ -3,6 +3,7 @@
 #include "mqtt.h"
 #include "photoresistor.h"
 #include "moisture.h"
+#include "pump.h"
 
 int main(void)
 {
@@ -17,18 +18,26 @@ int main(void)
     mqtt_connect();
     photoresistor_init(27);
     moisture_init(26, 16);
+    pump_init(15);
 
     while (1)
     {
         uint16_t photoresistor_value = photoresistor_read(27);
         printf("photoresistor value: %u\n", photoresistor_value);
-        publish_read("light", photoresistor_value);
         
         uint16_t moisture_value = moisture_read(26, 16);
         printf("moisture value: %u\n", moisture_value);
-        publish_read("moisture", moisture_value);
 
-        sleep_ms(10000);
+        if (moisture_value < 3000)
+        {
+            pump_toggle(15, 1);
+        }
+        else
+        {
+            pump_toggle(15, 0);
+        }
+
+        sleep_ms(1000);
     }
 
     return 0;

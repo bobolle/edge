@@ -11,6 +11,7 @@ target_sources(${LIBRARY_PROJECT}
         wifi.c
         moisture.c
         photoresistor.c
+        pump.c
 )
 
 target_include_directories(${LIBRARY_PROJECT}

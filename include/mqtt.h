@@ -25,6 +25,6 @@ int mqtt_init(void);
 err_t mqtt_connect(void);
 static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status);
 static void mqtt_pub_request(void *arg, err_t result);
-err_t publish_read(const char* sensor, int value);
+void publish_sensor_read(const char* sensor, int value);
 
 #endif
