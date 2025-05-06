@@ -28,7 +28,7 @@ jobs:
           echo "PICO_SDK_PATH=$GITHUB_WORKSPACE/pico-sdk" >> $GITHUB_ENV
         
       - name: Configure CMake
-        run: cmake -B build -DPICO_SDK_PATH=$PICO_SDK_PATH
+        run: cmake -B build -DPICO_SDK_PATH=$PICO_SDK_PATH -DWIFI_SSID="" -DWIFI_PASSWD=""
 
       - name: Build project
         run: cmake --build build
