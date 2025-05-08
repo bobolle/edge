@@ -12,6 +12,7 @@ target_sources(${LIBRARY_PROJECT}
         moisture.c
         photoresistor.c
         pump.c
+        ultrasonic.c
 )
 
 target_include_directories(${LIBRARY_PROJECT}
