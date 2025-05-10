@@ -23,7 +23,9 @@ static ip_addr_t broker_ip;
 
 err_t mqtt_connect(void);
 err_t mqtt_pub_sensor_read(const char* sensor, int value);
+err_t mqtt_sub(const char* topic)
 static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status);
 static void mqtt_pub_cb(void *arg, err_t result);
+static void mqtt_sub_cb(void *arg, err_t result);
 
 #endif

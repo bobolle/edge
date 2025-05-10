@@ -54,3 +54,22 @@ err_t mqtt_pub_sensor_read(const char* sensor_type, int value)
 
     return err;
 }
+
+static void mqtt_sub_cb(void *arg, err_t result)
+{
+    if (result == ERR_OK)
+    {
+        printf("Publish success: %d\n", result);
+    }
+    else
+    {
+        printf("Publish failed: %d\n", result);
+    }
+}
+
+err_t mqtt_sub(const char* topic)
+{
+    err_t err = mqtt_sub_unsub(mqtt_client, topic, 0, mqtt_sub_cb, 0, 1);
+
+    return err;
+}
