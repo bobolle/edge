@@ -21,10 +21,9 @@ static struct mqtt_connect_client_info_t client_info = {
 };
 static ip_addr_t broker_ip;
 
-int mqtt_init(void);
 err_t mqtt_connect(void);
+err_t mqtt_pub_sensor_read(const char* sensor, int value);
 static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status);
-static void mqtt_pub_request(void *arg, err_t result);
-void publish_sensor_read(const char* sensor, int value);
+static void mqtt_pub_cb(void *arg, err_t result);
 
 #endif

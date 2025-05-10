@@ -4,21 +4,19 @@
 
 #include <string.h>
 
-int mqtt_init(void)
+err_t mqtt_connect(void)
 {
     mqtt_client = mqtt_client_new();
     ip4addr_aton(BROKER_ADDRESS, &broker_ip);
+    err_t err = mqtt_client_connect(mqtt_client, &broker_ip,
+                                    MQTT_PORT, mqtt_connection_cb,
+                                    NULL, &client_info);
 
-    return 0;
-}
-
-err_t mqtt_connect(void)
-{
-    err_t err = mqtt_client_connect(mqtt_client, &broker_ip, 1883, mqtt_connection_cb, NULL, &client_info);
     return err;
 }
 
-static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status)
+static void mqtt_connection_cb(mqtt_client_t *client, void *arg,
+                               mqtt_connection_status_t status)
 {
     if (status == MQTT_CONNECT_ACCEPTED)
     {
@@ -30,7 +28,7 @@ static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection
     }
 }
 
-static void mqtt_pub_request_cb(void *arg, err_t result)
+static void mqtt_pub_cb(void *arg, err_t result)
 {
     if (result == ERR_OK)
     {
@@ -42,13 +40,17 @@ static void mqtt_pub_request_cb(void *arg, err_t result)
     }
 }
 
-void publish_sensor_read(const char* sensor, int value)
+err_t mqtt_pub_sensor_read(const char* sensor_type, int value)
 {
     char topic[32];
-    snprintf(topic, sizeof(topic), "edge/%s/sensor/%s", CLIENT_ID, sensor);
+    snprintf(topic, sizeof(topic), "edge/%s/sensor/%s", CLIENT_ID, sensor_type);
 
     char payload[20];
     snprintf(payload, sizeof(payload), "{\"value\": %d}", value);
 
-    mqtt_publish(mqtt_client, topic, payload, strlen(payload), 0, 0, mqtt_pub_request_cb, NULL);
+    err_t err = mqtt_publish(mqtt_client, topic,
+                             payload, strlen(payload),
+                             0, 0, mqtt_pub_cb, NULL);
+
+    return err;
 }
