@@ -21,6 +21,7 @@ static void mqtt_connection_cb(mqtt_client_t *client, void *arg,
     if (status == MQTT_CONNECT_ACCEPTED)
     {
         printf("Connection to broker success: %d\n", status);
+        mqtt_set_inpub_callback(mqtt_client, NULL, mqtt_incoming_data_cb, NULL);
     }
     else
     {
@@ -72,4 +73,8 @@ err_t mqtt_sub(const char* topic)
     err_t err = mqtt_sub_unsub(mqtt_client, topic, 0, mqtt_sub_cb, 0, 1);
 
     return err;
+}
+
+static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags)
+{
 }
