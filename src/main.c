@@ -16,7 +16,6 @@ int main(void)
     }
 
     // MQTT connection init
-    mqtt_init();
     mqtt_connect();
 
     // Photoresistor init
@@ -37,12 +36,12 @@ int main(void)
     {
         // send photoresistor data to hub
         uint16_t photoresistor_value = photoresistor_read(27);
-        publish_sensor_read("light", photoresistor_value);
+        mqtt_pub_sensor_read("light", photoresistor_value);
         printf("photoresistor value: %u\n", photoresistor_value);
         
         // send moisture data to hub
         uint16_t moisture_value = moisture_read(26, 16);
-        publish_sensor_read("moisture", moisture_value);
+        mqtt_pub_sensor_read("moisture", moisture_value);
         printf("moisture value: %u\n", moisture_value);
 
         if (moisture_value > 3000)
