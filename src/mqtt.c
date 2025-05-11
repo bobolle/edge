@@ -4,6 +4,8 @@
 
 #include <string.h>
 
+volatile int moisture_threshold = 2000;
+
 err_t mqtt_connect(void)
 {
     mqtt_client = mqtt_client_new();
@@ -77,4 +79,12 @@ err_t mqtt_sub(const char* topic)
 
 static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags)
 {
+    char temp_buffer[5];
+    if (len < sizeof(temp_buffer))
+    {
+        memcpy (temp_buffer, data, len);
+        temp_buffer[len] = '\0';
+        moisture_threshold = atoi(temp_buffer);
+        printf("New moisture_threshold set to: %d\n", moisture_threshold);
+    }
 }
