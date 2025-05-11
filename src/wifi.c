@@ -1,3 +1,4 @@
+#include "wifi.h"
 #include <stdio.h>
 #include "pico/cyw43_arch.h"
 

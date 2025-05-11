@@ -1,3 +1,4 @@
+#include "photoresistor.h"
 #include "hardware/adc.h"
 
 void photoresistor_init(uint8_t signal_pin)

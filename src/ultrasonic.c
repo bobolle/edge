@@ -1,7 +1,7 @@
+#include "ultrasonic.h"
 #include "pico/stdlib.h"
 #include "hardware/timer.h"
 #include "hardware/gpio.h"
-#include "ultrasonic.h"
 #include <stdio.h>
 
 static ultrasonic_pins_t ultrasonic_pins;

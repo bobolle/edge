@@ -1,3 +1,4 @@
+#include "pump.h"
 #include "hardware/gpio.h"
 
 void pump_init(uint8_t pump_pin)

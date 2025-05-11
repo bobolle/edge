@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #pragma once
 
 void pump_init(uint8_t pump_pin);

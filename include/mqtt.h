@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef MQTT_H
-#define MQTT_H
-
 #include "lwip/apps/mqtt.h"
 
 #define BROKER_ADDRESS "192.168.1.220"
@@ -28,5 +25,3 @@ static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection
 static void mqtt_pub_cb(void *arg, err_t result);
 static void mqtt_sub_cb(void *arg, err_t result);
 static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags);
-
-#endif
