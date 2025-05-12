@@ -62,11 +62,11 @@ static void mqtt_sub_cb(void *arg, err_t result)
 {
     if (result == ERR_OK)
     {
-        printf("Publish success: %d\n", result);
+        printf("Subscribe success: %d\n", result);
     }
     else
     {
-        printf("Publish failed: %d\n", result);
+        printf("Subscribe failed: %d\n", result);
     }
 }
 
