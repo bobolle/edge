@@ -21,7 +21,25 @@ int main(void)
 
     // MQTT connection init
     mqtt_connect();
-    err_t err = mqtt_sub("edge/+/settings/moisture");
+    err_t err = mqtt_sub("edge/+/set/moisture");
+    if (err != ERR_OK)
+    {
+        printf("could not sub to topic\n");
+    }
+
+    err = mqtt_sub("edge/+/get/moisture");
+    if (err != ERR_OK)
+    {
+        printf("could not sub to topic\n");
+    }
+
+    err = mqtt_sub("edge/+/get/photoresistor");
+    if (err != ERR_OK)
+    {
+        printf("could not sub to topic\n");
+    }
+
+    err = mqtt_sub("edge/+/set/photoresistor");
     if (err != ERR_OK)
     {
         printf("could not sub to topic\n");
@@ -43,16 +61,6 @@ int main(void)
 
     while (1)
     {
-        // send photoresistor data to hub
-        uint16_t photoresistor_value = photoresistor_read(27);
-        mqtt_pub_sensor_read("light", photoresistor_value);
-        printf("photoresistor value: %u\n", photoresistor_value);
-        
-        // send moisture data to hub
-        uint16_t moisture_value = moisture_read(26, 16);
-        mqtt_pub_sensor_read("moisture", moisture_value);
-        printf("moisture value: %u\n", moisture_value);
-
         if (moisture_value > moisture_threshold)
         {
             printf("pump toggled on\n");
@@ -65,7 +73,7 @@ int main(void)
             gpio_put(5, 0);
         }
 
-        sleep_ms(1000);
+        sleep_ms(5000);
     }
 
     return 0;

@@ -6,6 +6,11 @@
 #define CLIENT_ID "pico_w_01"
 
 extern volatile int moisture_threshold;
+extern volatile int moisture_value;
+extern volatile int photoresistor_threshold;
+extern volatile int photoresistor_value;
+
+static char current_topic[64];
 
 static mqtt_client_t *mqtt_client;
 static struct mqtt_connect_client_info_t client_info = {
@@ -26,4 +31,5 @@ err_t mqtt_sub(const char* topic);
 static void mqtt_connection_cb(mqtt_client_t *client, void *arg, mqtt_connection_status_t status);
 static void mqtt_pub_cb(void *arg, err_t result);
 static void mqtt_sub_cb(void *arg, err_t result);
+static void mqtt_incoming_publish_cb(void *arg, const char *topic, u32_t tot_len);
 static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags);

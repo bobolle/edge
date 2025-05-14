@@ -5,6 +5,9 @@
 #include <string.h>
 
 volatile int moisture_threshold = 2000;
+volatile int moisture_value = 0;
+volatile int photoresistor_threshold = 2000;
+volatile int photoresistor_value = 0;
 
 err_t mqtt_connect(void)
 {
@@ -23,7 +26,7 @@ static void mqtt_connection_cb(mqtt_client_t *client, void *arg,
     if (status == MQTT_CONNECT_ACCEPTED)
     {
         printf("Connection to broker success: %d\n", status);
-        mqtt_set_inpub_callback(mqtt_client, NULL, mqtt_incoming_data_cb, NULL);
+        mqtt_set_inpub_callback(mqtt_client, mqtt_incoming_publish_cb, mqtt_incoming_data_cb, NULL);
     }
     else
     {
@@ -77,6 +80,12 @@ err_t mqtt_sub(const char* topic)
     return err;
 }
 
+static void mqtt_incoming_publish_cb(void *arg, const char *topic, u32_t tot_len)
+{
+    strncpy(current_topic, topic, sizeof(current_topic) - 1);
+    current_topic[sizeof(current_topic) - 1] = '\0';
+}
+
 static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t flags)
 {
     char temp_buffer[5];
@@ -84,7 +93,54 @@ static void mqtt_incoming_data_cb(void *arg, const u8_t *data, u16_t len, u8_t f
     {
         memcpy (temp_buffer, data, len);
         temp_buffer[len] = '\0';
-        moisture_threshold = atoi(temp_buffer);
-        printf("New moisture_threshold set to: %d\n", moisture_threshold);
     }
+
+    int part = 0;
+    char *token = strtok(current_topic, "/");
+    char *control = NULL;
+    char *sensor_type = NULL;
+
+    // example topic: 
+    //     edge/+/incoming/moisture
+    while (token != NULL)
+    {
+        if (part == 2)
+        {
+            control = token;
+        }
+        else if (part == 3)
+        {
+            sensor_type = token;
+        }
+
+        token = strtok(NULL, "/");
+        part++;
+    }
+
+    if (strcmp(control, "set") == 0)
+    {
+        if (strcmp(sensor_type, "moisture") == 0)
+        {
+            moisture_threshold = atoi(temp_buffer);
+            printf("New moisture threshold set to: %d\n", moisture_threshold);
+        }
+        else if (strcmp(sensor_type, "photoresistor") == 0)
+        {
+            photoresistor_threshold = atoi(temp_buffer);
+            printf("New photoresistor threshold set to: %d\n", photoresistor_threshold);
+        }
+    } else
+    {
+        if (strcmp(sensor_type, "moisture") == 0)
+        {
+            moisture_value = atoi(temp_buffer);
+            printf("New moisture value: %d\n", photoresistor_value);
+        }
+        else if (strcmp(sensor_type, "photoresistor") == 0)
+        {
+            photoresistor_value = atoi(temp_buffer);
+            printf("New photoresistor value: %d\n", photoresistor_value);
+        }
+    }
+
 }
