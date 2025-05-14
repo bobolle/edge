@@ -2,8 +2,10 @@
 
 #include "lwip/apps/mqtt.h"
 
-#define BROKER_ADDRESS "192.168.1.220"
+#define BROKER_ADDRESS "192.168.0.40"
 #define CLIENT_ID "pico_w_01"
+
+extern volatile int moisture_threshold;
 
 static mqtt_client_t *mqtt_client;
 static struct mqtt_connect_client_info_t client_info = {

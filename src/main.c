@@ -14,9 +14,18 @@ int main(void)
     {
         printf("could not connect to wifi\n");
     }
+    else
+    {
+        printf("connected to wifi\n");
+    }
 
     // MQTT connection init
     mqtt_connect();
+    err_t err = mqtt_sub("edge/+/settings/moisture");
+    if (err != ERR_OK)
+    {
+        printf("could not sub to topic\n");
+    }
 
     // Photoresistor init
     photoresistor_init(27);
@@ -44,7 +53,7 @@ int main(void)
         mqtt_pub_sensor_read("moisture", moisture_value);
         printf("moisture value: %u\n", moisture_value);
 
-        if (moisture_value > 3000)
+        if (moisture_value > moisture_threshold)
         {
             printf("pump toggled on\n");
             pump_toggle(15, 1);
